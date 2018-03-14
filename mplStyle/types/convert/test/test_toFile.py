@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -51,47 +51,49 @@ import mplStyle.types.convert as cvt
 #===========================================================================
 
 #===========================================================================
-class TesttoFile( unittest.TestCase ):
-   """ToFile module."""
-
-   #-----------------------------------------------------------------------
-   def setUp( self ):
-      """This method is called before any tests are run."""
-      
-      # You may place initialization code here.
 
 
-   #-----------------------------------------------------------------------
-   def tearDown( self ):
-      """This method is called after all tests are run."""
-      pass
-   #=======================================================================
-   # Add tests methods below.
-   # Any method whose name begins with 'test' will be run by the framework.
-   #=======================================================================
-   def testNoCase( self ):
-      """For new files."""
-      converter = cvt.toFile
+class TesttoFile(unittest.TestCase):
+    """ToFile module."""
 
-      l = "a.boa"
-      v = converter( l )
-      self.assertEqual( l, v, "Incorrect conversion of basic inputs." )
+    #-----------------------------------------------------------------------
+    def setUp(self):
+        """This method is called before any tests are run."""
 
-      l = "$HOME/a.boa"
+        # You may place initialization code here.
 
-      h = os.environ[ "HOME" ]
-      r = "%s/a.boa" % h
-      v = converter( l )
-      self.assertEqual( r, v, "Incorrect conversion of env variables." )
+    #-----------------------------------------------------------------------
+    def tearDown(self):
+        """This method is called after all tests are run."""
+        pass
+    #=======================================================================
+    # Add tests methods below.
+    # Any method whose name begins with 'test' will be run by the framework.
+    #=======================================================================
 
-      self.assertRaises( Exception, converter, None, name='value',
-                   msg = "AllowNone=false didn't throw." )
-      
-   #-----------------------------------------------------------------------
-   def testNone( self ):
-      """Allow none."""
-      converter = cvt.toFile
-      v = converter( None, allowNone = True )
-      self.assertEqual( None, v, "Incorrect conversion of none." )
+    def testNoCase(self):
+        """For new files."""
+        converter = cvt.toFile
+
+        l = "a.boa"
+        v = converter(l)
+        self.assertEqual(l, v, "Incorrect conversion of basic inputs.")
+
+        l = "$HOME/a.boa"
+
+        h = os.environ["HOME"]
+        r = "%s/a.boa" % h
+        v = converter(l)
+        self.assertEqual(r, v, "Incorrect conversion of env variables.")
+
+        self.assertRaises(Exception, converter, None, name='value',
+                          msg="AllowNone=false didn't throw.")
+
+    #-----------------------------------------------------------------------
+    def testNone(self):
+        """Allow none."""
+        converter = cvt.toFile
+        v = converter(None, allowNone=True)
+        self.assertEqual(None, v, "Incorrect conversion of none.")
 
 #===========================================================================

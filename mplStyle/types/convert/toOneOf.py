@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -44,43 +44,45 @@ __version__ = "$Revision: #1 $"
 #===========================================================================
 
 #===========================================================================
-def toOneOf( value, converters, name="" ):
-   """: Convert a value to a OneOf object.
 
-   This converter will attempt to convert the value using one of several
-   converters specified.
 
-   = INPUT VARIABLES
-   - value       The input value to convert.
-   - converters  The list of converters to try.
-   - name        A name to give to this converter instance. Used in making
-                 error messages easier to understand.
+def toOneOf(value, converters, name=""):
+    """: Convert a value to a OneOf object.
 
-   = RETURN VALUE
-   - Returns the input value with the converted element.
-   """
-   savedError = None
+    This converter will attempt to convert the value using one of several
+    converters specified.
 
-   if name:
-      name = " '%s'" % name
+    = INPUT VARIABLES
+    - value       The input value to convert.
+    - converters  The list of converters to try.
+    - name        A name to give to this converter instance. Used in making
+                  error messages easier to understand.
 
-   # Try each converter
-   for cvt in converters:
-      try:
-         result = cvt( value )
-         return result
-      except Exception, e:
-         if not savedError:
-            savedError = e
+    = RETURN VALUE
+    - Returns the input value with the converted element.
+    """
+    savedError = None
 
-         # Ignore the error.
+    if name:
+        name = " '%s'" % name
 
-   msg = "Error trying to convert the input argument%s.  None of the valid " \
-         "input converters was successful.\n" % name
+    # Try each converter
+    for cvt in converters:
+        try:
+            result = cvt(value)
+            return result
+        except Exception as e:
+            if not savedError:
+                savedError = e
 
-   if savedError:
-      msg += "The first error encountered was: " + str( savedError )
+            # Ignore the error.
 
-   raise Exception( msg )
+    msg = "Error trying to convert the input argument%s.  None of the valid " \
+          "input converters was successful.\n" % name
+
+    if savedError:
+        msg += "The first error encountered was: " + str(savedError)
+
+    raise Exception(msg)
 
 #===========================================================================

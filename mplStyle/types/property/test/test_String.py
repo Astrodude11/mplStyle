@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -53,87 +53,90 @@ import mplStyle.types as S
 #===========================================================================
 
 #===========================================================================
-class MySubStyle( S.SubStyle ):
-   """A Sub-Classed Style."""
 
-   prop = S.property.String( default = None )
-   prop2 = S.property.String( regexp = '^\$.+?\$$' )
 
-   #-----------------------------------------------------------------------
+class MySubStyle(S.SubStyle):
+    """A Sub-Classed Style."""
+
+    prop = S.property.String(default=None)
+    prop2 = S.property.String(regexp='^\$.+?\$$')
+
+    #-----------------------------------------------------------------------
 
 #===========================================================================
-class TestString( unittest.TestCase ):
-   """String module."""
 
-   #-----------------------------------------------------------------------
-   def setUp( self ):
-      """This method is called before any tests are run."""
-      pass
 
-   #-----------------------------------------------------------------------
-   def tearDown( self ):
-      """This method is called after all tests are run."""
-      pass
-   
-   #=======================================================================
-   # Add tests methods below.
-   # Any method whose name begins with 'test' will be run by the framework.
-   #=======================================================================
-   def testString( self ):
-      """Test String style property."""
-      # Default initialize
-      style = MySubStyle()
-      self.assertEqual( None, MySubStyle.prop.default,
-               msg = "Class default value for 'prop' wrong" )
-      self.assertEqual( None, style.prop,
-               msg = "Instance default value for 'style.prop' wrong" )
+class TestString(unittest.TestCase):
+    """String module."""
 
-      # Change the local copy
-      style.prop = "abc"
-      self.assertEqual( None, MySubStyle.prop.default,
-               msg = "1) Class default value for 'prop' changed" )
-      self.assertEqual( "abc", style.prop,
-               msg = "1) Instance value for 'style.prop' wrong" )
+    #-----------------------------------------------------------------------
+    def setUp(self):
+        """This method is called before any tests are run."""
+        pass
 
-      style.prop2 = "$abc$"
-      self.assertEqual( None, MySubStyle.prop2.default,
-               msg = "1) Class default value for 'prop2' changed" )
-      self.assertEqual( "$abc$", style.prop2,
-               msg = "1) Instance value for 'style.prop2' wrong" )
+    #-----------------------------------------------------------------------
+    def tearDown(self):
+        """This method is called after all tests are run."""
+        pass
 
-      # Make a new instance
-      newStyle = MySubStyle( prop = "xyz" )
-      self.assertEqual( None, MySubStyle.prop.default,
-               msg = "2) Class default value for 'prop' changed" )
-      self.assertEqual( "abc", style.prop,
-               msg = "2) Instance value for 'style.prop' wrong" )
-      self.assertEqual( "xyz", newStyle.prop,
-               msg = "2) Instance value for 'newStyle.prop' wrong" )
+    #=======================================================================
+    # Add tests methods below.
+    # Any method whose name begins with 'test' will be run by the framework.
+    #=======================================================================
+    def testString(self):
+        """Test String style property."""
+        # Default initialize
+        style = MySubStyle()
+        self.assertEqual(None, MySubStyle.prop.default,
+                         msg="Class default value for 'prop' wrong")
+        self.assertEqual(None, style.prop,
+                         msg="Instance default value for 'style.prop' wrong")
 
-      # Check converter
-      newStyle.prop = "abcxyz"
-      self.assertEqual( None, MySubStyle.prop.default,
-               msg = "3) Class default value for 'prop' changed" )
-      self.assertEqual( "abc", style.prop,
-               msg = "3) Instance value for 'style.prop' wrong" )
-      self.assertEqual( "abcxyz", newStyle.prop,
-               msg = "3) Instance value for 'newStyle.prop' wrong" )
+        # Change the local copy
+        style.prop = "abc"
+        self.assertEqual(None, MySubStyle.prop.default,
+                         msg="1) Class default value for 'prop' changed")
+        self.assertEqual("abc", style.prop,
+                         msg="1) Instance value for 'style.prop' wrong")
 
-      # Error condition
-      msg = "Failed to raise on invalid value for 'style.prop'."
-      self.assertRaises( Exception, MySubStyle, prop=1, msg = msg )
+        style.prop2 = "$abc$"
+        self.assertEqual(None, MySubStyle.prop2.default,
+                         msg="1) Class default value for 'prop2' changed")
+        self.assertEqual("$abc$", style.prop2,
+                         msg="1) Instance value for 'style.prop2' wrong")
 
-      msg = "Failed to raise on invalid value for 'style.prop2'."
-      self.assertRaises( Exception, MySubStyle, prop2='abc', msg = msg )
+        # Make a new instance
+        newStyle = MySubStyle(prop="xyz")
+        self.assertEqual(None, MySubStyle.prop.default,
+                         msg="2) Class default value for 'prop' changed")
+        self.assertEqual("abc", style.prop,
+                         msg="2) Instance value for 'style.prop' wrong")
+        self.assertEqual("xyz", newStyle.prop,
+                         msg="2) Instance value for 'newStyle.prop' wrong")
 
-      # String check
-      msg = "Incorrect string value for 'prop'"
-      s = "String: MySubStyle.prop"
-      self.assertEqual( s, str(MySubStyle.prop), msg = msg )
+        # Check converter
+        newStyle.prop = "abcxyz"
+        self.assertEqual(None, MySubStyle.prop.default,
+                         msg="3) Class default value for 'prop' changed")
+        self.assertEqual("abc", style.prop,
+                         msg="3) Instance value for 'style.prop' wrong")
+        self.assertEqual("abcxyz", newStyle.prop,
+                         msg="3) Instance value for 'newStyle.prop' wrong")
 
-      msg = "Incorrect string value for 'prop2'"
-      s = 'String: MySubStyle.prop2'
-      self.assertEqual( s, str(MySubStyle.prop2), msg = msg )
+        # Error condition
+        msg = "Failed to raise on invalid value for 'style.prop'."
+        self.assertRaises(Exception, MySubStyle, prop=1, msg=msg)
+
+        msg = "Failed to raise on invalid value for 'style.prop2'."
+        self.assertRaises(Exception, MySubStyle, prop2='abc', msg=msg)
+
+        # String check
+        msg = "Incorrect string value for 'prop'"
+        s = "String: MySubStyle.prop"
+        self.assertEqual(s, str(MySubStyle.prop), msg=msg)
+
+        msg = "Incorrect string value for 'prop2'"
+        s = 'String: MySubStyle.prop2'
+        self.assertEqual(s, str(MySubStyle.prop2), msg=msg)
 
 #=======================================================================
-

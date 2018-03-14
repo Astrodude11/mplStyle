@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -56,58 +56,59 @@ from mplStyle import MplFontStyle
 #===========================================================================
 
 #===========================================================================
-class TestMplFontStyle( unittest.TestCase ):
-   """Test the MplFontStyle class."""
 
-   #-----------------------------------------------------------------------
-   def setUp( self ):
-      """This method is called before any tests are run."""
-      pass
 
-   #-----------------------------------------------------------------------
-   def tearDown( self ):
-      """This method is called after all tests are run."""
-      pass
+class TestMplFontStyle(unittest.TestCase):
+    """Test the MplFontStyle class."""
 
-   #=======================================================================
-   # Add tests methods below.
-   # Any method whose name begins with 'test' will be run by the framework.
+    #-----------------------------------------------------------------------
+    def setUp(self):
+        """This method is called before any tests are run."""
+        pass
 
-   #-----------------------------------------------------------------------
-   def checkElement( self, testName, values, element ):
-      for property in values:
-         expected = values[ property ]
-         msg = "%s: Incorrect value for property: %s" % (testName, property)
-         getFunc = getattr( element, 'get_%s' % property )
-         self.assertEqual( expected, getFunc(), msg = msg )
+    #-----------------------------------------------------------------------
+    def tearDown(self):
+        """This method is called after all tests are run."""
+        pass
 
-   #-----------------------------------------------------------------------
-   def testBasic( self ):
-      """A basic test of MplFontStyle."""
+    #=======================================================================
+    # Add tests methods below.
+    # Any method whose name begins with 'test' will be run by the framework.
 
-      values = {
-         'size' : mpl.font_manager.FontManager.get_default_size() * 2.0,
-         'style' : 'italic',
-         'weight' : 700,
-         'family' : ['serif'],
-      }
+    #-----------------------------------------------------------------------
+    def checkElement(self, testName, values, element):
+        for property in values:
+            expected = values[property]
+            msg = "%s: Incorrect value for property: %s" % (testName, property)
+            getFunc = getattr(element, 'get_%s' % property)
+            self.assertEqual(expected, getFunc(), msg=msg)
 
-      txt = mpl.text.Text()
-      element = txt.get_fontproperties()
+    #-----------------------------------------------------------------------
+    def testBasic(self):
+        """A basic test of MplFontStyle."""
 
-      style = MplFontStyle(
-         scale = 2.0,
-         style = values['style'],
-         weight = values['weight'],
-         family = values['family'][0],
-      )
+        values = {
+            'size': mpl.font_manager.FontManager.get_default_size() * 2.0,
+            'style': 'italic',
+            'weight': 700,
+            'family': ['serif'],
+        }
 
-      style.apply( element )
+        txt = mpl.text.Text()
+        element = txt.get_fontproperties()
 
-      self.checkElement( "Apply", values, element )
+        style = MplFontStyle(
+            scale=2.0,
+            style=values['style'],
+            weight=values['weight'],
+            family=values['family'][0],
+        )
 
-      self.assertRaises( Exception, style.apply, 'invalid',
-                   msg = "Failed to throw on invalid element." )
+        style.apply(element)
 
-   #-----------------------------------------------------------------------
+        self.checkElement("Apply", values, element)
 
+        self.assertRaises(Exception, style.apply, 'invalid',
+                          msg="Failed to throw on invalid element.")
+
+    #-----------------------------------------------------------------------

@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -45,62 +45,64 @@ import re
 from .. import convert as cvt
 #===========================================================================
 
-__all__ = [ 'String' ]
+__all__ = ['String']
 
 #===========================================================================
-class String( StyleProperty ):
-   """: A String style property.
-   """
 
-   #-----------------------------------------------------------------------
-   def __init__( self, regexp = None, default = None, doc = "" ):
-      """: Create a new String object.
 
-      = INPUT VARIABLES
-      - default     The default value that instances will be initialized with.
-      - doc         The docstring for this property.
-      """
-      if regexp:
-         self.regexp = re.compile( regexp )
-         doc += "\nThe value must satisfy the regular expression: '%s'." % \
-                ( self.regexp, )
-      else:
-         self.regexp = regexp
+class String(StyleProperty):
+    """: A String style property.
+    """
 
-      validator = cvt.Converter( cvt.toType, str, allowNone=True )
-      StyleProperty.__init__( self, default, validator, doc )
+    #-----------------------------------------------------------------------
+    def __init__(self, regexp=None, default=None, doc=""):
+        """: Create a new String object.
 
-   #-----------------------------------------------------------------------
-   def validate( self, value ):
-      """: Validate and return a valid value
+        = INPUT VARIABLES
+        - default     The default value that instances will be initialized with.
+        - doc         The docstring for this property.
+        """
+        if regexp:
+            self.regexp = re.compile(regexp)
+            doc += "\nThe value must satisfy the regular expression: '%s'." % \
+                   (self.regexp, )
+        else:
+            self.regexp = regexp
 
-      = ERROR CONDITIONS
-      - Will throw an exception if the specified value is invalid.
+        validator = cvt.Converter(cvt.toType, str, allowNone=True)
+        StyleProperty.__init__(self, default, validator, doc)
 
-      = INPUT VARIABLES
-      - value   The value to set the instance of this property to.
+    #-----------------------------------------------------------------------
+    def validate(self, value):
+        """: Validate and return a valid value
 
-      = RETURN VALUE
-      - Returns a valid value.
-      """
-      # First make sure it is a string
-      result = StyleProperty.validate( self, value )
+        = ERROR CONDITIONS
+        - Will throw an exception if the specified value is invalid.
 
-      if result is None:
-         return result
+        = INPUT VARIABLES
+        - value   The value to set the instance of this property to.
 
-      # Now check against any regular expression
-      if self.regexp:
-         m = self.regexp.match( result )
+        = RETURN VALUE
+        - Returns a valid value.
+        """
+        # First make sure it is a string
+        result = StyleProperty.validate(self, value)
 
-         if m is None:
-            # There was no match
-            msg = "Error converting the '%s' value.\n" \
-                  '   Pattern = "%s"\n' \
-                  '   Value = "%s"' % (self.name, self.regexp.pattern, value)
-            raise Exception( msg )
+        if result is None:
+            return result
 
-      return result
+        # Now check against any regular expression
+        if self.regexp:
+            m = self.regexp.match(result)
 
-   #-----------------------------------------------------------------------
+            if m is None:
+                # There was no match
+                msg = "Error converting the '%s' value.\n" \
+                      '   Pattern = "%s"\n' \
+                      '   Value = "%s"' % (
+                          self.name, self.regexp.pattern, value)
+                raise Exception(msg)
 
+        return result
+
+    #-----------------------------------------------------------------------

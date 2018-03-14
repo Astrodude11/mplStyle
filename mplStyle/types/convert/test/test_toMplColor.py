@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -53,65 +53,70 @@ from PyQt4 import QtGui
 #===========================================================================
 
 #===========================================================================
-class TesttoMplColor( unittest.TestCase ):
-   """ToMplColor module."""
-
-   #-----------------------------------------------------------------------
-   def setUp( self ):
-      """This method is called before any tests are run."""
-      
-      # You may place initialization code here.
 
 
-   #-----------------------------------------------------------------------
-   def tearDown( self ):
-      """This method is called after all tests are run."""
-      pass
-   #=======================================================================
-   # Add tests methods below.
-   # Any method whose name begins with 'test' will be run by the framework.
-   #=======================================================================
-   def testToMplColor( self ):
-      """Test the ToMplColor converter."""
-      converter = cvt.toMplColor
+class TesttoMplColor(unittest.TestCase):
+    """ToMplColor module."""
 
-      t = converter( 'red' )
-      self.assertEqual( '#FF0000', t, "Incorrect conversion of a string." )
+    #-----------------------------------------------------------------------
+    def setUp(self):
+        """This method is called before any tests are run."""
 
-      t = converter( QtGui.QColor( 0, 255, 0 ) )
-      self.assertEqual( '#00FF00', t, "Incorrect conversion of a QColor." )
+        # You may place initialization code here.
 
-      t = converter( 'None' )
-      self.assertEqual( 'none', t, "Incorrect conversion of a GlColor." )
+    #-----------------------------------------------------------------------
+    def tearDown(self):
+        """This method is called after all tests are run."""
+        pass
+    #=======================================================================
+    # Add tests methods below.
+    # Any method whose name begins with 'test' will be run by the framework.
+    #=======================================================================
 
-      t = converter( (1.0, 0.0, 0.0, 1.0), )
-      self.assertEqual( '#FF0000', t, "Incorrect conversion of a float tuple." )
+    def testToMplColor(self):
+        """Test the ToMplColor converter."""
+        converter = cvt.toMplColor
 
-      t = converter( [0, 255, 0, 1], )
-      self.assertEqual( '#00FF00', t, "Incorrect conversion of an int list." )
+        t = converter('red')
+        self.assertEqual('#FF0000', t, "Incorrect conversion of a string.")
 
-      t = converter( 'r' )
-      self.assertEqual( '#FF0000', t, "Incorrect conversion of 'r'." )
+        t = converter(QtGui.QColor(0, 255, 0))
+        self.assertEqual('#00FF00', t, "Incorrect conversion of a QColor.")
 
-      t = converter( 'g' )
-      self.assertEqual( '#008000', t, "Incorrect conversion of 'g'." )
+        t = converter('None')
+        self.assertEqual('none', t, "Incorrect conversion of a GlColor.")
 
-      t = converter( 'b' )
-      self.assertEqual( '#0000FF', t, "Incorrect conversion of 'b'." )
+        t = converter((1.0, 0.0, 0.0, 1.0), )
+        self.assertEqual(
+            '#FF0000',
+            t,
+            "Incorrect conversion of a float tuple.")
 
-      t = converter( 'k' )
-      self.assertEqual( '#000000', t, "Incorrect conversion of 'k'." )
+        t = converter([0, 255, 0, 1], )
+        self.assertEqual('#00FF00', t, "Incorrect conversion of an int list.")
 
-      t = converter( 'w' )
-      self.assertEqual( '#FFFFFF', t, "Incorrect conversion of 'w'." )
+        t = converter('r')
+        self.assertEqual('#FF0000', t, "Incorrect conversion of 'r'.")
 
-      self.assertRaises( Exception, converter, None, name='value',
-                   msg="None argument should be an error." )
-      self.assertRaises( Exception, converter, "foo bar", name='value',
-                   msg="String argument should be an error." )
+        t = converter('g')
+        self.assertEqual('#008000', t, "Incorrect conversion of 'g'.")
 
-      # Try w/ allowNone
-      t = converter( None, allowNone=True )
-      self.assertEqual( None, t, "Incorrect conversion of None." )
+        t = converter('b')
+        self.assertEqual('#0000FF', t, "Incorrect conversion of 'b'.")
+
+        t = converter('k')
+        self.assertEqual('#000000', t, "Incorrect conversion of 'k'.")
+
+        t = converter('w')
+        self.assertEqual('#FFFFFF', t, "Incorrect conversion of 'w'.")
+
+        self.assertRaises(Exception, converter, None, name='value',
+                          msg="None argument should be an error.")
+        self.assertRaises(Exception, converter, "foo bar", name='value',
+                          msg="String argument should be an error.")
+
+        # Try w/ allowNone
+        t = converter(None, allowNone=True)
+        self.assertEqual(None, t, "Incorrect conversion of None.")
 
 #=======================================================================

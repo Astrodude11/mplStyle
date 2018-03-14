@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -56,79 +56,80 @@ from mplStyle import MplTickStyle
 #===========================================================================
 
 #===========================================================================
-class TestMplTickStyle( unittest.TestCase ):
-   """Test the MplTickStyle class."""
 
-   #-----------------------------------------------------------------------
-   def setUp( self ):
-      """This method is called before any tests are run."""
-      pass
 
-   #-----------------------------------------------------------------------
-   def tearDown( self ):
-      """This method is called after all tests are run."""
-      pass
+class TestMplTickStyle(unittest.TestCase):
+    """Test the MplTickStyle class."""
 
-   #=======================================================================
-   # Add tests methods below.
-   # Any method whose name begins with 'test' will be run by the framework.
+    #-----------------------------------------------------------------------
+    def setUp(self):
+        """This method is called before any tests are run."""
+        pass
 
-   #-----------------------------------------------------------------------
-   def checkElement( self, testName, values, element ):
-      for property in values:
-         expected = values[ property ]
-         msg = "%s: Incorrect value for property: %s" % (testName, property)
-         getFunc = getattr( element, 'get_%s' % property )
-         self.assertEqual( expected, getFunc(), msg = msg )
+    #-----------------------------------------------------------------------
+    def tearDown(self):
+        """This method is called after all tests are run."""
+        pass
 
-   #-----------------------------------------------------------------------
-   def testBasic( self ):
-      """A basic test of MplTickStyle."""
+    #=======================================================================
+    # Add tests methods below.
+    # Any method whose name begins with 'test' will be run by the framework.
 
-      tickVals = {
-         'pad' : 0.1,
-      }
+    #-----------------------------------------------------------------------
+    def checkElement(self, testName, values, element):
+        for property in values:
+            expected = values[property]
+            msg = "%s: Incorrect value for property: %s" % (testName, property)
+            getFunc = getattr(element, 'get_%s' % property)
+            self.assertEqual(expected, getFunc(), msg=msg)
 
-      markVals = {
-         'color' : '#F0F000',
-         'markersize' : 15,
-         'markeredgewidth' : 3.0,
-         'linewidth' : 2,
-      }
+    #-----------------------------------------------------------------------
+    def testBasic(self):
+        """A basic test of MplTickStyle."""
 
-      gridVals = {
-         'color' : '#B0B0B0',
-         'linestyle' : ':',
-         'linewidth' : 1,
-      }
+        tickVals = {
+            'pad': 0.1,
+        }
 
-      fig = mpl.figure.Figure()
-      ax = mpl.axes.Axes( fig, [ 0.2, 0.2, 0.6, 0.6 ] )
-      tick = ax.get_xaxis().get_major_ticks()[0]
+        markVals = {
+            'color': '#F0F000',
+            'markersize': 15,
+            'markeredgewidth': 3.0,
+            'linewidth': 2,
+        }
 
-      style = MplTickStyle(
-         pad = tickVals['pad'],
-         grid = {
-            'color' : gridVals['color'],               
-            'style' : gridVals['linestyle'],
-            'width' : gridVals['linewidth'],
-         },
-         length = markVals['markersize'],
-         width = markVals['markeredgewidth'],
-         marks = {
-            'color' : markVals['color'],               
-            'width' : markVals['linewidth'],
-         },
-      )
+        gridVals = {
+            'color': '#B0B0B0',
+            'linestyle': ':',
+            'linewidth': 1,
+        }
 
-      style.apply( tick )
+        fig = mpl.figure.Figure()
+        ax = mpl.axes.Axes(fig, [0.2, 0.2, 0.6, 0.6])
+        tick = ax.get_xaxis().get_major_ticks()[0]
 
-      self.checkElement( "Apply tick", tickVals, tick )
-      self.checkElement( "Apply mark", markVals, tick.tick1line )
-      self.checkElement( "Apply grid", gridVals, tick.gridline )
+        style = MplTickStyle(
+            pad=tickVals['pad'],
+            grid={
+                'color': gridVals['color'],
+                'style': gridVals['linestyle'],
+                'width': gridVals['linewidth'],
+            },
+            length=markVals['markersize'],
+            width=markVals['markeredgewidth'],
+            marks={
+                'color': markVals['color'],
+                'width': markVals['linewidth'],
+            },
+        )
 
-      self.assertRaises( Exception, style.apply, 'invalid',
-                   msg = "Failed to throw on invalid element." )
+        style.apply(tick)
 
-   #-----------------------------------------------------------------------
+        self.checkElement("Apply tick", tickVals, tick)
+        self.checkElement("Apply mark", markVals, tick.tick1line)
+        self.checkElement("Apply grid", gridVals, tick.gridline)
 
+        self.assertRaises(Exception, style.apply, 'invalid',
+                          msg="Failed to throw on invalid element.")
+
+    #-----------------------------------------------------------------------

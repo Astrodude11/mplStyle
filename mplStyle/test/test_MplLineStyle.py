@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -55,81 +55,82 @@ from mplStyle import MplLineStyle
 #===========================================================================
 
 #===========================================================================
-class TestMplLineStyle( unittest.TestCase ):
-   """Test the MplLineStyle class."""
 
-   #-----------------------------------------------------------------------
-   def setUp( self ):
-      """This method is called before any tests are run."""
-      pass
 
-   #-----------------------------------------------------------------------
-   def tearDown( self ):
-      """This method is called after all tests are run."""
-      pass
+class TestMplLineStyle(unittest.TestCase):
+    """Test the MplLineStyle class."""
 
-   #=======================================================================
-   # Add tests methods below.
-   # Any method whose name begins with 'test' will be run by the framework.
+    #-----------------------------------------------------------------------
+    def setUp(self):
+        """This method is called before any tests are run."""
+        pass
 
-   #-----------------------------------------------------------------------
-   def checkElement( self, testName, values, element ):
-      for property in values:
-         expected = values[ property ]
-         msg = "%s: Incorrect value for property: %s" % (testName, property)
-         getFunc = getattr( element, 'get_%s' % property )
-         self.assertEqual( expected, getFunc(), msg = msg )
+    #-----------------------------------------------------------------------
+    def tearDown(self):
+        """This method is called after all tests are run."""
+        pass
 
-   #-----------------------------------------------------------------------
-   def testBasic( self ):
-      """A basic test of MplLineStyle."""
+    #=======================================================================
+    # Add tests methods below.
+    # Any method whose name begins with 'test' will be run by the framework.
 
-      values = {
-         # Artist Properties
-         'alpha' : 0.95,
-         'clip_on' : True,
-         'snap' : True,
-         'visible' : False,
-         'zorder' : 5,
-         # Line Properties
-         'color' : '#FF0000',
-         'linestyle' : '-.',
-         'linewidth' : 2.5,
-         'markerfacecolor' : '#00FF00',
-         'markeredgecolor' : '#0000FF',
-         'markeredgewidth' : 0.5,
-         'markersize' : 8,
-         'marker' : 'o',
-         'fillstyle' : 'bottom',
-      }
+    #-----------------------------------------------------------------------
+    def checkElement(self, testName, values, element):
+        for property in values:
+            expected = values[property]
+            msg = "%s: Incorrect value for property: %s" % (testName, property)
+            getFunc = getattr(element, 'get_%s' % property)
+            self.assertEqual(expected, getFunc(), msg=msg)
 
-      element = mpl.lines.Line2D( [1, 2, 3], [3, 2, 1] )
+    #-----------------------------------------------------------------------
+    def testBasic(self):
+        """A basic test of MplLineStyle."""
 
-      style = MplLineStyle(
-         # Artist Properties
-         alpha = values['alpha'],
-         clip = values['clip_on'],
-         snap = values['snap'],
-         visible = values['visible'],
-         zOrder = values['zorder'],
-         # Line Properties
-         color = values['color'],
-         style = values['linestyle'],
-         width = values['linewidth'],
-         marker = { 'color' : values['markerfacecolor'],
-                    'edgeColor' : values['markeredgecolor'],
-                    'edgeWidth' : values['markeredgewidth'],
-                    'size' : values['markersize'],
-                    'style' : values['marker'],
-                    'fill' : values['fillstyle'] },
-      )
+        values = {
+            # Artist Properties
+            'alpha': 0.95,
+            'clip_on': True,
+            'snap': True,
+            'visible': False,
+            'zorder': 5,
+            # Line Properties
+            'color': '#FF0000',
+            'linestyle': '-.',
+            'linewidth': 2.5,
+            'markerfacecolor': '#00FF00',
+            'markeredgecolor': '#0000FF',
+            'markeredgewidth': 0.5,
+            'markersize': 8,
+            'marker': 'o',
+            'fillstyle': 'bottom',
+        }
 
-      style.apply( element )
+        element = mpl.lines.Line2D([1, 2, 3], [3, 2, 1])
 
-      self.checkElement( "Apply", values, element )
+        style = MplLineStyle(
+            # Artist Properties
+            alpha=values['alpha'],
+            clip=values['clip_on'],
+            snap=values['snap'],
+            visible=values['visible'],
+            zOrder=values['zorder'],
+            # Line Properties
+            color=values['color'],
+            style=values['linestyle'],
+            width=values['linewidth'],
+            marker={'color': values['markerfacecolor'],
+                    'edgeColor': values['markeredgecolor'],
+                    'edgeWidth': values['markeredgewidth'],
+                    'size': values['markersize'],
+                    'style': values['marker'],
+                    'fill': values['fillstyle']},
+        )
 
-      self.assertRaises( Exception, style.apply, 'invalid',
-                   msg = "Failed to throw on invalid element." )
+        style.apply(element)
 
-   #-----------------------------------------------------------------------
+        self.checkElement("Apply", values, element)
 
+        self.assertRaises(Exception, style.apply, 'invalid',
+                          msg="Failed to throw on invalid element.")
+
+    #-----------------------------------------------------------------------

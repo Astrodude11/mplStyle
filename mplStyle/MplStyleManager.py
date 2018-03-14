@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -45,7 +45,7 @@ from .MplStyle import MplStyle
 import matplotlib as MPL
 #===========================================================================
 
-__all__ = [ 'MplStyleManager' ]
+__all__ = ['MplStyleManager']
 
 # Some global variables
 MPLSTYLE_CLASS = MplStyle
@@ -67,151 +67,153 @@ MPLSTYLE_HEADER = """
 """
 
 #===========================================================================
-class MplStyleManager( S.StyleManager ):
-   """: An object used to manage one or more Style classes.
 
-   """
-   #-----------------------------------------------------------------------
-   def __init__( self ):
-      """: Create a new MplStyleManager object.
-      """
-      S.StyleManager.__init__( self, MPLSTYLE_CLASS,
-                                     MPLSTYLE_EXTENSION,
-                                     MPLSTYLE_PREFIX )
 
-   #-----------------------------------------------------------------------
-   def _loadFromFile( self, fname ):
-      """: Load the specified style file.
+class MplStyleManager(S.StyleManager):
+    """: An object used to manage one or more Style classes.
 
-      = INPUT VARIABLES
-      - fname    The path of the file to load.
+    """
+    #-----------------------------------------------------------------------
 
-      = RETURN VALUE
-      - Returns the new style that results from loading from the specified file.
-      """
-      # Allow style files to use some variables.
-      createData = lambda : {
-         'MplStyle' : MplStyle,
-         }
+    def __init__(self):
+        """: Create a new MplStyleManager object.
+        """
+        S.StyleManager.__init__(self, MPLSTYLE_CLASS,
+                                MPLSTYLE_EXTENSION,
+                                MPLSTYLE_PREFIX)
 
-      data = createData()
-      try:
-         execfile( fname, data )
-      except Exception, e:
-         msg = "MplStyleManager had an error loading the file '%s'" % fname
-         raise S.util.mergeExceptions( e, msg )
+    #-----------------------------------------------------------------------
+    def _loadFromFile(self, fname):
+        """: Load the specified style file.
 
-      if 'style' in data:
-         style = data['style']
-      else:
-         msg = "MplStyleManager is unable to load the style file '%s' " \
-               "because there was no value named 'style' of type 'MplStyle' " \
-               "found." % (fname,)
-         raise Exception( msg )
+        = INPUT VARIABLES
+        - fname    The path of the file to load.
 
-      if not isinstance( style, MplStyle ):
-         msg = "MplStyleManager is unable to load the style file '%s' " \
-               "because the value named 'style' was expected to be of type " \
-               "'MplStyle', but was instead of type '%s'" % \
-               (fname, style.__class__.__name__)
-         raise Exception( msg )
+        = RETURN VALUE
+        - Returns the new style that results from loading from the specified file.
+        """
+        # Allow style files to use some variables.
+        def createData(): return {
+            'MplStyle': MplStyle,
+        }
 
-      # Load the custom file
-      custom = os.path.dirname( fname )
-      customBase, customExt = os.path.splitext( fname )
-      custom = os.path.join( custom, ( "%s_custom%s" % (customBase,
-                                                        customExt) ) )
+        data = createData()
+        try:
+            execfile(fname, data)
+        except Exception as e:
+            msg = "MplStyleManager had an error loading the file '%s'" % fname
+            raise S.util.mergeExceptions(e, msg)
 
-      if os.path.exists( custom ):
-         customData = createData()
-         execfile( custom, customData )
+        if 'style' in data:
+            style = data['style']
+        else:
+            msg = "MplStyleManager is unable to load the style file '%s' " \
+                  "because there was no value named 'style' of type 'MplStyle' " \
+                  "found." % (fname,)
+            raise Exception(msg)
 
-         if MPLSTYLE_CUSTOM_FUNC in customData:
-            style.custom = customData[MPLSTYLE_CUSTOM_FUNC]
-         else:
-            msg = "MplStyleManager encountered an error while loading the " \
-                  "style '%s'.  A custom script was found, but the expected " \
-                  "entry point '%s' was not found in the file.\nCustom File: " \
-                  "'%s'" % (style.name, MPLSTYLE_CUSTOM_FUNC, custom)
-            raise Exception( msg )
+        if not isinstance(style, MplStyle):
+            msg = "MplStyleManager is unable to load the style file '%s' " \
+                  "because the value named 'style' was expected to be of type " \
+                  "'MplStyle', but was instead of type '%s'" % \
+                  (fname, style.__class__.__name__)
+            raise Exception(msg)
 
-      return style
+        # Load the custom file
+        custom = os.path.dirname(fname)
+        customBase, customExt = os.path.splitext(fname)
+        custom = os.path.join(custom, ("%s_custom%s" % (customBase,
+                                                        customExt)))
 
-   #-----------------------------------------------------------------------
-   def _writeSubStyle( self, fout, style, prefix ):
-      """: Write the style to the file
+        if os.path.exists(custom):
+            customData = createData()
+            execfile(custom, customData)
 
-      = INPUT VARIABLES
-      - fout     The output file we are writing to
-      - style    The sub-style to write.
-      - prefix   The prefix to add to the beginning of each line.
-      """
-      propertyNames = style.propertyNames()
+            if MPLSTYLE_CUSTOM_FUNC in customData:
+                style.custom = customData[MPLSTYLE_CUSTOM_FUNC]
+            else:
+                msg = "MplStyleManager encountered an error while loading the " \
+                      "style '%s'.  A custom script was found, but the expected " \
+                      "entry point '%s' was not found in the file.\nCustom File: " \
+                      "'%s'" % (style.name, MPLSTYLE_CUSTOM_FUNC, custom)
+                raise Exception(msg)
 
-      for name in propertyNames:
-         value = getattr( style, name )
+        return style
 
-         if value is None:
-            continue
+    #-----------------------------------------------------------------------
+    def _writeSubStyle(self, fout, style, prefix):
+        """: Write the style to the file
 
-         if isinstance( value, str ) or isinstance( value, unicode ):
-            value = "'%s'" % value
+        = INPUT VARIABLES
+        - fout     The output file we are writing to
+        - style    The sub-style to write.
+        - prefix   The prefix to add to the beginning of each line.
+        """
+        propertyNames = style.propertyNames()
 
-         if isinstance( value, S.SubStyle ):
-            self._writeSubStyle( fout, value, "%s.%s" % (prefix, name) )
-         else:
-            fout.write( "%s.%s = %s\n" % (prefix, name, value) )
+        for name in propertyNames:
+            value = getattr(style, name)
 
-   #-----------------------------------------------------------------------
-   def _saveToFile( self, style, fname ):
-      """: Save the style to persistent file.
+            if value is None:
+                continue
 
-      This will write the given style to the named file overwriting the file if
-      it already exists.
+            if isinstance(value, str) or isinstance(value, unicode):
+                value = "'%s'" % value
 
-      = INPUT VARIABLES
-      - style     The style to save to a file.
-      - fname     The name of the file to save the style to.
-      """
-      with open( fname, 'w' ) as fout:
-         fout.write( MPLSTYLE_HEADER )
-         fout.write( "style = MplStyle( '%s' )\n" % (style.name,) )
-         self._writeSubStyle( fout, style, 'style' )
+            if isinstance(value, S.SubStyle):
+                self._writeSubStyle(fout, value, "%s.%s" % (prefix, name))
+            else:
+                fout.write("%s.%s = %s\n" % (prefix, name, value))
 
-   #-----------------------------------------------------------------------
-   def _deleteStyleFile( self, fname ):
-      """: Delete the persistent files for a style.
+    #-----------------------------------------------------------------------
+    def _saveToFile(self, style, fname):
+        """: Save the style to persistent file.
 
-      = INPUT VARIABLES
-      - fname    The name of the style file to delete.
-      """
-      # Remove the file
-      os.remove( fname )
+        This will write the given style to the named file overwriting the file if
+        it already exists.
 
-      # Check for a custom script file and remove it.
-      custom = os.path.dirname( fname )
-      customBase, customExt = os.path.splitext( fname )
-      custom = os.path.join( custom, ( "%s_custom%s" % (customBase,
-                                                        customExt) ) )
+        = INPUT VARIABLES
+        - style     The style to save to a file.
+        - fname     The name of the file to save the style to.
+        """
+        with open(fname, 'w') as fout:
+            fout.write(MPLSTYLE_HEADER)
+            fout.write("style = MplStyle( '%s' )\n" % (style.name,))
+            self._writeSubStyle(fout, style, 'style')
 
-      if os.path.exists( custom ):
-         os.remove( custom )
+    #-----------------------------------------------------------------------
+    def _deleteStyleFile(self, fname):
+        """: Delete the persistent files for a style.
 
-   #-----------------------------------------------------------------------
-   def _create( self, name, properties, parent, custom, **kwargs ):
-      """: Create a new style with the given name.
+        = INPUT VARIABLES
+        - fname    The name of the style file to delete.
+        """
+        # Remove the file
+        os.remove(fname)
 
-      = INPUT VARIABLES
-      - name        The name to give to the newly created style.
-      - properties  Initial property values to set in the newly created style.
-      - parent      The name of an existing style to use as the parent of the
-                    newly created style.
-      - custom      A callable object or function that will be passed the object
-                    that needs styling.
-      - kwargs      Any extra keyword arguments are passed into the style
-                    constructor.
-      """
-      return MplStyle( name, properties, parent, custom )
+        # Check for a custom script file and remove it.
+        custom = os.path.dirname(fname)
+        customBase, customExt = os.path.splitext(fname)
+        custom = os.path.join(custom, ("%s_custom%s" % (customBase,
+                                                        customExt)))
+
+        if os.path.exists(custom):
+            os.remove(custom)
+
+    #-----------------------------------------------------------------------
+    def _create(self, name, properties, parent, custom, **kwargs):
+        """: Create a new style with the given name.
+
+        = INPUT VARIABLES
+        - name        The name to give to the newly created style.
+        - properties  Initial property values to set in the newly created style.
+        - parent      The name of an existing style to use as the parent of the
+                      newly created style.
+        - custom      A callable object or function that will be passed the object
+                      that needs styling.
+        - kwargs      Any extra keyword arguments are passed into the style
+                      constructor.
+        """
+        return MplStyle(name, properties, parent, custom)
 
 #-----------------------------------------------------------------------
-

@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -41,30 +41,31 @@ __version__ = "$Revision: #1 $"
 from .Data import Data
 #===========================================================================
 
-__all__ = [ 'StyleData' ]
+__all__ = ['StyleData']
 
 #===========================================================================
-class StyleData( Data ):
-   """: The style information stored by the StyleManager.
 
-   """
 
-   #-----------------------------------------------------------------------
-   def __init__( self, style, filename = None, elements = None ):
-      """: Create a new StyleData object.
+class StyleData(Data):
+    """: The style information stored by the StyleManager.
 
-      = INPUT VARIABLES
-      - style     A style instance.
-      - filename  The path and name of the file containing the style.  None if
-                  not set.
-      - elements  A list of elements that are using the style.
-      """
-      elements = elements if elements is not None else []
-      Data.__init__( self, style = style,
-                           filename = filename,
-                           elements = elements )
+    """
 
-   #-----------------------------------------------------------------------
+    #-----------------------------------------------------------------------
+    def __init__(self, style, filename=None, elements=None):
+        """: Create a new StyleData object.
 
-   #-----------------------------------------------------------------------
+        = INPUT VARIABLES
+        - style     A style instance.
+        - filename  The path and name of the file containing the style.  None if
+                    not set.
+        - elements  A list of elements that are using the style.
+        """
+        elements = elements if elements is not None else []
+        Data.__init__(self, style=style,
+                      filename=filename,
+                      elements=elements)
 
+    #-----------------------------------------------------------------------
+
+    #-----------------------------------------------------------------------

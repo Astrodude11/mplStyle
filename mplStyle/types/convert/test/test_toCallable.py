@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -50,56 +50,59 @@ import mplStyle.types.convert as cvt
 #===========================================================================
 
 #===========================================================================
-class TesttoCallable( unittest.TestCase ):
-   """ToCallable module."""
 
-   #-----------------------------------------------------------------------
-   def setUp( self ):
-      """This method is called before any tests are run."""
-      pass
 
-   #-----------------------------------------------------------------------
-   def tearDown( self ):
-      """This method is called after all tests are run."""
-      pass
-   
-   #=======================================================================
-   # Add tests methods below.
-   # Any method whose name begins with 'test' will be run by the framework.
-   #=======================================================================
-   def testToCallable( self ):
-      """Function test."""
-      converter = cvt.toCallable
+class TesttoCallable(unittest.TestCase):
+    """ToCallable module."""
 
-      func = lambda: None
-      t = converter( func )
-      self.assertEqual( func, t, "Incorrect conversion of a function." )
+    #-----------------------------------------------------------------------
+    def setUp(self):
+        """This method is called before any tests are run."""
+        pass
 
-      func = lambda: None
-      t = converter( func )
-      self.assertEqual( func, t, "Incorrect conversion of a function." )
+    #-----------------------------------------------------------------------
+    def tearDown(self):
+        """This method is called after all tests are run."""
+        pass
 
-      class GoodClass:
-         "Class w/ the reqmtypes.ed call method."
-         def __call__( self ):
+    #=======================================================================
+    # Add tests methods below.
+    # Any method whose name begins with 'test' will be run by the framework.
+    #=======================================================================
+    def testToCallable(self):
+        """Function test."""
+        converter = cvt.toCallable
+
+        def func(): return None
+        t = converter(func)
+        self.assertEqual(func, t, "Incorrect conversion of a function.")
+
+        def func(): return None
+        t = converter(func)
+        self.assertEqual(func, t, "Incorrect conversion of a function.")
+
+        class GoodClass:
+            "Class w/ the reqmtypes.ed call method."
+
+            def __call__(self):
+                pass
+
+        inst = GoodClass()
+        t = converter(inst)
+        self.assertEqual(inst, t, "Incorrect conversion of a class.")
+
+        class BadClass:
+            "Class w/o the required call method."
             pass
 
-      inst = GoodClass()
-      t = converter( inst )
-      self.assertEqual( inst, t, "Incorrect conversion of a class." )
+        self.assertRaises(Exception, converter, BadClass(), name="value",
+                          msg="Class w/ no __call__ should be an error.")
+        self.assertRaises(Exception, converter, [1, 2, 3], name="value",
+                          msg="List argument should be an error.")
+        self.assertRaises(Exception, converter, 1.23, name="value",
+                          msg="Float argument should be an error.")
 
-      class BadClass:
-         "Class w/o the required call method."
-         pass
-
-      self.assertRaises( Exception, converter, BadClass(), name="value",
-                   msg="Class w/ no __call__ should be an error." )
-      self.assertRaises( Exception, converter, [ 1, 2, 3 ], name="value",
-                   msg="List argument should be an error." )
-      self.assertRaises( Exception, converter, 1.23, name="value",
-                   msg="Float argument should be an error." )
-
-      self.assertEqual( None, converter( None, allowNone=True ),
-               "Incorrect w/ allowNone=True" )
+        self.assertEqual(None, converter(None, allowNone=True),
+                         "Incorrect w/ allowNone=True")
 
 #=======================================================================

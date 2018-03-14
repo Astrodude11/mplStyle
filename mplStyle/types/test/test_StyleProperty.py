@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -50,74 +50,79 @@ import mplStyle as S
 #===========================================================================
 
 #===========================================================================
-def floatValidator( v ):
-   return float( v )
+
+
+def floatValidator(v):
+    return float(v)
 
 #===========================================================================
-class MySubStyle( S.types.SubStyle ):
-   """A Sub-Classed Style."""
 
-   prop = S.types.StyleProperty( default = 0.0, validator = float )
 
-   time = S.types.StyleProperty( default = 1.2, 
-                                 validator = floatValidator )
+class MySubStyle(S.types.SubStyle):
+    """A Sub-Classed Style."""
 
-   value = S.types.StyleProperty( default = None )
+    prop = S.types.StyleProperty(default=0.0, validator=float)
 
-   #-----------------------------------------------------------------------
+    time = S.types.StyleProperty(default=1.2,
+                                 validator=floatValidator)
+
+    value = S.types.StyleProperty(default=None)
+
+    #-----------------------------------------------------------------------
 
 #===========================================================================
-class TestSubProperty( unittest.TestCase ):
-   """Test the SubStyle class."""
 
-   #-----------------------------------------------------------------------
-   def setUp( self ):
-      """This method is called before any tests are run."""
-      pass
 
-   #-----------------------------------------------------------------------
-   def tearDown( self ):
-      """This method is called after all tests are run."""
-      pass
+class TestSubProperty(unittest.TestCase):
+    """Test the SubStyle class."""
 
-   #=======================================================================
-   # Add tests methods below.
-   # Any method whose name begins with 'test' will be run by the framework.
+    #-----------------------------------------------------------------------
+    def setUp(self):
+        """This method is called before any tests are run."""
+        pass
 
-   #-----------------------------------------------------------------------
-   def testBasic( self ):
-      """A basic test of StyleProperty."""
+    #-----------------------------------------------------------------------
+    def tearDown(self):
+        """This method is called after all tests are run."""
+        pass
 
-      s1 = MySubStyle()
+    #=======================================================================
+    # Add tests methods below.
+    # Any method whose name begins with 'test' will be run by the framework.
 
-      try:
-         s1.prop = "abc"
-      except:
-         pass
-      else:
-         self.fail( "Did not raise exception on invalid float." )
+    #-----------------------------------------------------------------------
+    def testBasic(self):
+        """A basic test of StyleProperty."""
 
-      try:
-         s1.time = "abc"
-      except:
-         pass
-      else:
-         self.fail( "Did not raise exception on invalid Epoch." )
+        s1 = MySubStyle()
 
-      s = "StyleProperty: MySubStyle.prop"
-      self.assertEqual( s, str(MySubStyle.prop),
-               msg = "Invalid string representation #1" )
+        try:
+            s1.prop = "abc"
+        except BaseException:
+            pass
+        else:
+            self.fail("Did not raise exception on invalid float.")
 
-      prop1 = S.types.StyleProperty( default = 0.0, validator = float )
-      prop1._name = 'FreeProp'
-      s = "StyleProperty: FreeProp"
-      self.assertEqual( s, str(prop1),
-               msg = "Invalid string representation #2" )
+        try:
+            s1.time = "abc"
+        except BaseException:
+            pass
+        else:
+            self.fail("Did not raise exception on invalid Epoch.")
 
-      prop2 = S.types.StyleProperty( default = 0.0, validator = int )
-      s = "StyleProperty"
-      self.assertEqual( s, str(prop2),
-               msg = "Invalid string representation #3" )
+        s = "StyleProperty: MySubStyle.prop"
+        self.assertEqual(s, str(MySubStyle.prop),
+                         msg="Invalid string representation #1")
 
-      self.assertEqual( 2, prop2( 2.1 ), msg = "Failed to validate." )
+        prop1 = S.types.StyleProperty(default=0.0, validator=float)
+        prop1._name = 'FreeProp'
+        s = "StyleProperty: FreeProp"
+        self.assertEqual(s, str(prop1),
+                         msg="Invalid string representation #2")
 
+        prop2 = S.types.StyleProperty(default=0.0, validator=int)
+        s = "StyleProperty"
+        self.assertEqual(s, str(prop2),
+                         msg="Invalid string representation #3")
+
+        self.assertEqual(2, prop2(2.1), msg="Failed to validate.")
