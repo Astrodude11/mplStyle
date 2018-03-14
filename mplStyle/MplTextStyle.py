@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -47,34 +47,36 @@ from .MplFontStyle import MplFontStyle
 import matplotlib.text as mpltext
 #===========================================================================
 
-__all__ = [ 'MplTextStyle' ]
+__all__ = ['MplTextStyle']
 
 #===========================================================================
-class MplTextStyle( MplArtistStyle ):
-   """: Style properties for managing matplotlib text elements.
-   """
 
-   font = S.property.SubStyle( MplFontStyle, doc = """
+
+class MplTextStyle(MplArtistStyle):
+    """: Style properties for managing matplotlib text elements.
+    """
+
+    font = S.property.SubStyle(MplFontStyle, doc="""
 The font properties.
 
 = SEE ALSO
 - :ref:`MplTextStyle <mplStyle_MplTextStyle>`
-""" )
+""")
 
-   bgColor = S.property.MplColor( doc = "The color behind the text." )
+    bgColor = S.property.MplColor(doc="The color behind the text.")
 
-   color = S.property.MplColor( doc = """
+    color = S.property.MplColor(doc="""
 The color value of the text.  This is the same as 'fgColor'.
-""" )
+""")
 
-   fgColor = S.property.Alias( 'color', isProperty=True, doc = """
+    fgColor = S.property.Alias('color', isProperty=True, doc="""
 The color value of the text.  This is the same as 'color'.
-""" )
+""")
 
-   vertAlign = S.property.Enum( { 'center' : 'center',
-                                  'top' : 'top',
-                                  'bottom' : 'bottom',
-                                  'baseline' : 'baseline', }, doc = """
+    vertAlign = S.property.Enum({'center': 'center',
+                                 'top': 'top',
+                                 'bottom': 'bottom',
+                                 'baseline': 'baseline', }, doc="""
 The vertical alignment of the text.
 
 Can be one of the following:
@@ -83,11 +85,11 @@ Can be one of the following:
    - 'top'
    - 'bottom'
    - 'baseline'
-""" )
+""")
 
-   horizAlign = S.property.Enum( { 'center' : 'center',
-                                   'left' : 'left',
-                                   'right' : 'right', }, doc = """
+    horizAlign = S.property.Enum({'center': 'center',
+                                  'left': 'left',
+                                  'right': 'right', }, doc="""
 The horizontal alignment of the text.
 
 Can be one of the following:
@@ -95,11 +97,11 @@ Can be one of the following:
    - 'center'
    - 'left'
    - 'right'
-""" )
+""")
 
-   multiAlign = S.property.Enum( { 'left' : 'left',
-                                   'right' : 'right',
-                                   'center' : 'center' }, doc = """
+    multiAlign = S.property.Enum({'left': 'left',
+                                  'right': 'right',
+                                  'center': 'center'}, doc="""
 The alignment for multiple lines layout.
 
 The layout of the box containing the multiple lines is controlled by
@@ -109,68 +111,67 @@ The layout of the box containing the multiple lines is controlled by
    - 'left'
    - 'right'
    - 'center'
-""" )
+""")
 
-   lineSpacing = S.property.Float( min = 0.0, doc = """
+    lineSpacing = S.property.Float(min=0.0, doc="""
 The line spacing as a multiple of the font size.
-""" )
+""")
 
-   rotation = S.property.Float( min = -360.0, max = 360.0, doc = """
+    rotation = S.property.Float(min=-360.0, max=360.0, doc="""
 The rotation of the text from 0.0 to 360.0 degrees.
-""" )
+""")
 
-   #-----------------------------------------------------------------------
-   def apply( self, obj, defaults = {}, **kwargs ):
-      """: Apply this style to the given object using the supplied defaults.
+    #-----------------------------------------------------------------------
+    def apply(self, obj, defaults={}, **kwargs):
+        """: Apply this style to the given object using the supplied defaults.
 
-      = NOTE
-      - This can apply to any matplotlib Text.
+        = NOTE
+        - This can apply to any matplotlib Text.
 
-      = INPUT VARIABLES
-      - obj       The object to apply the style to.
-      - defaults  Keyword-value dictionary with defaults values to use if a
-                  property value is not specified.
-      - kwargs    Keyword-value dictionary whose values will supercede
-                  any values set by the properties of this sub-style.
-      """
-      if not isinstance( obj, mpltext.Text ):
-         msg = "Unable to apply this sub-style to the given element." \
-               "Expected a matplotlib 'Text' and instead received " \
-               "the following:\n%s" % (obj,)
-         raise Exception( msg )
+        = INPUT VARIABLES
+        - obj       The object to apply the style to.
+        - defaults  Keyword-value dictionary with defaults values to use if a
+                    property value is not specified.
+        - kwargs    Keyword-value dictionary whose values will supercede
+                    any values set by the properties of this sub-style.
+        """
+        if not isinstance(obj, mpltext.Text):
+            msg = "Unable to apply this sub-style to the given element." \
+                  "Expected a matplotlib 'Text' and instead received " \
+                  "the following:\n%s" % (obj,)
+            raise Exception(msg)
 
-      # Map the style name to mpl property name
-      properties = {
-         'bgColor'     : 'backgroundcolor',
-         'fgColor'     : 'color',
-         'vertAlign'   : 'verticalalignment',
-         'horizAlign'  : 'horizontalalignment',
-         'multiAlign'  : 'multialignment',
-         'lineSpacing' : 'linespacing',
-         'rotation'    : 'rotation',
-      }
+        # Map the style name to mpl property name
+        properties = {
+            'bgColor': 'backgroundcolor',
+            'fgColor': 'color',
+            'vertAlign': 'verticalalignment',
+            'horizAlign': 'horizontalalignment',
+            'multiAlign': 'multialignment',
+            'lineSpacing': 'linespacing',
+            'rotation': 'rotation',
+        }
 
-      # Apply the font properties
-      subKwargs = kwargs.get( 'font', {} )
-      subDefaults = S.lib.resolveDefaults( defaults, ['font'] )
-      self.font.apply( obj.get_font_properties(), subDefaults, **subKwargs )
+        # Apply the font properties
+        subKwargs = kwargs.get('font', {})
+        subDefaults = S.lib.resolveDefaults(defaults, ['font'])
+        self.font.apply(obj.get_font_properties(), subDefaults, **subKwargs)
 
-      # Call the parent class method
-      MplArtistStyle.apply( self, obj, defaults, **kwargs )
+        # Call the parent class method
+        MplArtistStyle.apply(self, obj, defaults, **kwargs)
 
-      kw = {}
+        kw = {}
 
-      for p in properties:
-         mplProp = properties[ p ]
+        for p in properties:
+            mplProp = properties[p]
 
-         value = self.getValue( p, defaults, **kwargs )
+            value = self.getValue(p, defaults, **kwargs)
 
-         if value is not None:
-            kw[ mplProp ] = value
+            if value is not None:
+                kw[mplProp] = value
 
-      # Only call update if there is something to update
-      if kw:
-         obj.update( kw )
+        # Only call update if there is something to update
+        if kw:
+            obj.update(kw)
 
-   #-----------------------------------------------------------------------
-
+    #-----------------------------------------------------------------------

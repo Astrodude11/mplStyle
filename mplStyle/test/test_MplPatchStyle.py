@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -55,74 +55,75 @@ from mplStyle import MplPatchStyle
 #===========================================================================
 
 #===========================================================================
-class TestMplPatchStyle( unittest.TestCase ):
-   """Test the MplPatchStyle class."""
 
-   #-----------------------------------------------------------------------
-   def setUp( self ):
-      """This method is called before any tests are run."""
-      pass
 
-   #-----------------------------------------------------------------------
-   def tearDown( self ):
-      """This method is called after all tests are run."""
-      pass
+class TestMplPatchStyle(unittest.TestCase):
+    """Test the MplPatchStyle class."""
 
-   #=======================================================================
-   # Add tests methods below.
-   # Any method whose name begins with 'test' will be run by the framework.
+    #-----------------------------------------------------------------------
+    def setUp(self):
+        """This method is called before any tests are run."""
+        pass
 
-   #-----------------------------------------------------------------------
-   def checkElement( self, testName, values, element ):
-      for property in values:
-         expected = values[ property ]
-         msg = "%s: Incorrect value for property: %s" % (testName, property)
-         getFunc = getattr( element, 'get_%s' % property )
-         self.assertEqual( expected, getFunc(), msg = msg )
+    #-----------------------------------------------------------------------
+    def tearDown(self):
+        """This method is called after all tests are run."""
+        pass
 
-   #-----------------------------------------------------------------------
-   def testBasic( self ):
-      """A basic test of MplPatchStyle."""
+    #=======================================================================
+    # Add tests methods below.
+    # Any method whose name begins with 'test' will be run by the framework.
 
-      values = {
-         # Artist Properties
-         'alpha' : 0.95,
-         'clip_on' : True,
-         'snap' : True,
-         'visible' : False,
-         'zorder' : 5,
-         # Patch Properties
-         'antialiased' : True,
-         'facecolor' : (1.0, 0.0, 0.0, 0.95),
-         'fill' : True,
-         'edgecolor' : (1.0, 0.0, 0.0, 0.95),
-         'linestyle' : 'dashdot',
-         'linewidth' : 2.5,
-      }
+    #-----------------------------------------------------------------------
+    def checkElement(self, testName, values, element):
+        for property in values:
+            expected = values[property]
+            msg = "%s: Incorrect value for property: %s" % (testName, property)
+            getFunc = getattr(element, 'get_%s' % property)
+            self.assertEqual(expected, getFunc(), msg=msg)
 
-      element = mpl.patches.Patch()
+    #-----------------------------------------------------------------------
+    def testBasic(self):
+        """A basic test of MplPatchStyle."""
 
-      style = MplPatchStyle(
-         # Artist Properties
-         alpha = values['alpha'],
-         clip = values['clip_on'],
-         snap = values['snap'],
-         visible = values['visible'],
-         zOrder = values['zorder'],
-         # Patch Properties
-         antialiased = values['antialiased'],
-         color = values['facecolor'],
-         edgeStyle = values['linestyle'],
-         edgeWidth = values['linewidth'],
-         filled = values['fill'],
-      )
+        values = {
+            # Artist Properties
+            'alpha': 0.95,
+            'clip_on': True,
+            'snap': True,
+            'visible': False,
+            'zorder': 5,
+            # Patch Properties
+            'antialiased': True,
+            'facecolor': (1.0, 0.0, 0.0, 0.95),
+            'fill': True,
+            'edgecolor': (1.0, 0.0, 0.0, 0.95),
+            'linestyle': 'dashdot',
+            'linewidth': 2.5,
+        }
 
-      style.apply( element )
+        element = mpl.patches.Patch()
 
-      self.checkElement( "Apply", values, element )
+        style = MplPatchStyle(
+            # Artist Properties
+            alpha=values['alpha'],
+            clip=values['clip_on'],
+            snap=values['snap'],
+            visible=values['visible'],
+            zOrder=values['zorder'],
+            # Patch Properties
+            antialiased=values['antialiased'],
+            color=values['facecolor'],
+            edgeStyle=values['linestyle'],
+            edgeWidth=values['linewidth'],
+            filled=values['fill'],
+        )
 
-      self.assertRaises( Exception, style.apply, 'invalid',
-                   msg = "Failed to throw on invalid element." )
+        style.apply(element)
 
-   #-----------------------------------------------------------------------
+        self.checkElement("Apply", values, element)
 
+        self.assertRaises(Exception, style.apply, 'invalid',
+                          msg="Failed to throw on invalid element.")
+
+    #-----------------------------------------------------------------------

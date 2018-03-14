@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -43,77 +43,78 @@ from copy import copy
 from .. import convert as cvt
 #===========================================================================
 
-__all__ = [ 'SubStyle' ]
+__all__ = ['SubStyle']
 
 #===========================================================================
-class SubStyle( StyleProperty ):
-   """: A SubStyle style property.
-   """
 
-   #-----------------------------------------------------------------------
-   def __init__( self, styleClass, **kwargs ):
-      """: Create a new SubStyle object.
 
-      This is a property that is an instance of a SubStyle type.
+class SubStyle(StyleProperty):
+    """: A SubStyle style property.
+    """
 
-      = INPUT VARIABLES
-      - styleClass   The class of the sub style type.
-      - kwargs       Keyword argument values used when constructing an instance
-                     of styleClass.
-      """
-      validator = cvt.Converter( cvt.toInstance, styleClass, allowNone=False )
-      doc = kwargs.pop( 'doc', None )
+    #-----------------------------------------------------------------------
+    def __init__(self, styleClass, **kwargs):
+        """: Create a new SubStyle object.
 
-      if doc is None:
-         doc = "The value must be an instance of class '%s'." % \
-               ( styleClass.__name__, )
+        This is a property that is an instance of a SubStyle type.
 
-      # Create an instance of the SubStyle -- this becomes the default value
-      self.styleClass = styleClass
-      self.kwargs = kwargs
-      style = self.styleClass( **self.kwargs )
+        = INPUT VARIABLES
+        - styleClass   The class of the sub style type.
+        - kwargs       Keyword argument values used when constructing an instance
+                       of styleClass.
+        """
+        validator = cvt.Converter(cvt.toInstance, styleClass, allowNone=False)
+        doc = kwargs.pop('doc', None)
 
-      StyleProperty.__init__( self, style, validator, doc )
+        if doc is None:
+            doc = "The value must be an instance of class '%s'." % \
+                  (styleClass.__name__, )
 
-   #-----------------------------------------------------------------------
-   def validate( self, value ):
-      """: Validate and return a valid value
+        # Create an instance of the SubStyle -- this becomes the default value
+        self.styleClass = styleClass
+        self.kwargs = kwargs
+        style = self.styleClass(**self.kwargs)
 
-      = ERROR CONDITIONS
-      - Will throw an exception if the specified value is invalid.
+        StyleProperty.__init__(self, style, validator, doc)
 
-      = INPUT VARIABLES
-      - value   The value to set the instance of this property to.
+    #-----------------------------------------------------------------------
+    def validate(self, value):
+        """: Validate and return a valid value
 
-      = RETURN VALUE
-      - Returns a valid value.
-      """
-      # If this is a dictionary, then convert it
-      if isinstance( value, dict ):
-         kw = {}
-         kw.update( self.kwargs )
-         kw.update( value )
-         value = self.styleClass( **kw )
+        = ERROR CONDITIONS
+        - Will throw an exception if the specified value is invalid.
 
-      # Now validate as before
-      return StyleProperty.validate( self, value )
+        = INPUT VARIABLES
+        - value   The value to set the instance of this property to.
 
-   #-----------------------------------------------------------------------
-   def __str__( self ):
-      """: Get a string representation of this instance.
+        = RETURN VALUE
+        - Returns a valid value.
+        """
+        # If this is a dictionary, then convert it
+        if isinstance(value, dict):
+            kw = {}
+            kw.update(self.kwargs)
+            kw.update(value)
+            value = self.styleClass(**kw)
 
-      = RETURN VALUE
-      - Returns a string represnetation of this property.
-      """
-      if self.owner:
-         return "%s: %s.%s" % \
-                ( self.styleClass.__name__,
-                  self.owner.__name__,
-                  self.name )
-      elif self.name:
-         return "%s: %s" % ( self.styleClass.__name__, self.name )
-      else:
-         return "%s" % ( self.styleClass.__name__ )
+        # Now validate as before
+        return StyleProperty.validate(self, value)
 
-   #-----------------------------------------------------------------------
+    #-----------------------------------------------------------------------
+    def __str__(self):
+        """: Get a string representation of this instance.
 
+        = RETURN VALUE
+        - Returns a string represnetation of this property.
+        """
+        if self.owner:
+            return "%s: %s.%s" % \
+                   (self.styleClass.__name__,
+                    self.owner.__name__,
+                    self.name)
+        elif self.name:
+            return "%s: %s" % (self.styleClass.__name__, self.name)
+        else:
+            return "%s" % (self.styleClass.__name__)
+
+    #-----------------------------------------------------------------------

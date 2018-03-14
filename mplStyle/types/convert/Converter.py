@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -42,77 +42,80 @@ __version__ = "$Revision: #1 $"
 #===========================================================================
 
 #===========================================================================
+
+
 class Converter:
-   """: This class makes a callable converter an instance.
+    """: This class makes a callable converter an instance.
 
-   In some cases, one might need to keep track of not just a converter
-   function, but also the optional arguments that might be passed into
-   it.  This class will keep track of both and call the appropriate
-   converter function along with its optional arguments.
+    In some cases, one might need to keep track of not just a converter
+    function, but also the optional arguments that might be passed into
+    it.  This class will keep track of both and call the appropriate
+    converter function along with its optional arguments.
 
-   # import style.types.convert as cvt
-   # cvtList = [ cvt.Converter( cvt.toListOf, cvt.toEpoch, allowOne=True ),
-   #             cvt.Converter( cvt.toListOf, cvt.toDuration, allowOne=True ) ]
-   # result = cvt.toOneOf( Epoch.now(), cvtList )
-   """
-   #------------------------------------------------------------------------
-   def __init__( self, converter, *args, **kwargs ):
-      """: Create the conversion.
+    # import style.types.convert as cvt
+    # cvtList = [ cvt.Converter( cvt.toListOf, cvt.toEpoch, allowOne=True ),
+    #             cvt.Converter( cvt.toListOf, cvt.toDuration, allowOne=True ) ]
+    # result = cvt.toOneOf( Epoch.now(), cvtList )
+    """
+    #------------------------------------------------------------------------
 
-      = INPUT VARIABLES
-      - converter   The converter function to run when converting values.
-      - args        A list of positional arguments passed into the converter
-                    function after the values is passed in.
-      - kwargs      A dictionary of keyword-arguments passed into the converter
-                    function after the positional arguments.
-      """
-      self.converter = converter
-      self.args = args
-      self.kwargs = kwargs
-      
-   #------------------------------------------------------------------------
-   def __call__( self, value, **kwargs ):
-      """: Do the conversion.
+    def __init__(self, converter, *args, **kwargs):
+        """: Create the conversion.
 
-      = INPUT VARIABLES
-      - value    The user input.
-      - kwargs   Any additional keyword arguments to pass into the converter.
+        = INPUT VARIABLES
+        - converter   The converter function to run when converting values.
+        - args        A list of positional arguments passed into the converter
+                      function after the values is passed in.
+        - kwargs      A dictionary of keyword-arguments passed into the converter
+                      function after the positional arguments.
+        """
+        self.converter = converter
+        self.args = args
+        self.kwargs = kwargs
 
-      = RETURN VALUE
-      - Returns the converted object
-      """
-      kw = {}
-      kw.update( self.kwargs )
-      kw.update( kwargs )
+    #------------------------------------------------------------------------
+    def __call__(self, value, **kwargs):
+        """: Do the conversion.
 
-      return self.converter( value, *self.args, **kw )
+        = INPUT VARIABLES
+        - value    The user input.
+        - kwargs   Any additional keyword arguments to pass into the converter.
 
-   #------------------------------------------------------------------------
-   def __repr__( self ):
-      """: Get a string representation of this class.
+        = RETURN VALUE
+        - Returns the converted object
+        """
+        kw = {}
+        kw.update(self.kwargs)
+        kw.update(kwargs)
 
-      = RETURN VALUE
-      - a String representation of this class.
-      """
-      return str( self )
+        return self.converter(value, *self.args, **kw)
 
-   #------------------------------------------------------------------------
-   def __str__( self ):
-      """: Get a string representation of this class.
+    #------------------------------------------------------------------------
+    def __repr__(self):
+        """: Get a string representation of this class.
 
-      = RETURN VALUE
-      - a String representation of this class.
-      """
-      s = "%s( " % (self.converter.__name__,)
+        = RETURN VALUE
+        - a String representation of this class.
+        """
+        return str(self)
 
-      for value in self.args:
-         s += "%s, " % (value,)
+    #------------------------------------------------------------------------
+    def __str__(self):
+        """: Get a string representation of this class.
 
-      for key in self.kwargs:
-         s += "%s = %s, " % (key, self.kwargs[key])
+        = RETURN VALUE
+        - a String representation of this class.
+        """
+        s = "%s( " % (self.converter.__name__,)
 
-      s += ")"
+        for value in self.args:
+            s += "%s, " % (value,)
 
-      return s
+        for key in self.kwargs:
+            s += "%s = %s, " % (key, self.kwargs[key])
+
+        s += ")"
+
+        return s
 
 #===========================================================================

@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -43,26 +43,27 @@ from ..StyleProperty import StyleProperty
 from .. import convert as cvt
 #===========================================================================
 
-__all__ = [ 'MplColor' ]
+__all__ = ['MplColor']
 
 #===========================================================================
-class MplColor( StyleProperty ):
-   """: A MplColor style property.
-   """
 
-   #-----------------------------------------------------------------------
-   def __init__( self, default = None, doc = "" ):
-      """: Create a new MplColor object.
 
-      = INPUT VARIABLES
-      - default     The default value that instances will be initialized with.
-      - doc         The docstring for this property.
-      """
-      doc += "\nThe value can be any valid matplotlib color, " \
-             "QColor, or GlColor."
+class MplColor(StyleProperty):
+    """: A MplColor style property.
+    """
 
-      validator = cvt.Converter( cvt.toMplColor, allowNone=True )
-      StyleProperty.__init__( self, default, validator, doc )
+    #-----------------------------------------------------------------------
+    def __init__(self, default=None, doc=""):
+        """: Create a new MplColor object.
 
-   #-----------------------------------------------------------------------
+        = INPUT VARIABLES
+        - default     The default value that instances will be initialized with.
+        - doc         The docstring for this property.
+        """
+        doc += "\nThe value can be any valid matplotlib color, " \
+               "QColor, or GlColor."
 
+        validator = cvt.Converter(cvt.toMplColor, allowNone=True)
+        StyleProperty.__init__(self, default, validator, doc)
+
+    #-----------------------------------------------------------------------

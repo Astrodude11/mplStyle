@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -46,172 +46,179 @@ from .SubStyle import SubStyle
 #===========================================================================
 
 __all__ = [
-   'cleanupFilename',
-   'mergeDicts',
-   'resolveDefaults',
-   'stylePath',
-   ]
+    'cleanupFilename',
+    'mergeDicts',
+    'resolveDefaults',
+    'stylePath',
+]
 
 #===========================================================================
-def cleanupFilename( fname ):
-   """: Make the filename usable.
 
-   = INPUT VARIABLES
-   - fname   Given a filename, clean-it up to make sure we can use it with
-             the file system.
 
-   = RETURN VALUE
-   - Returns a cleaned up form of the input file name.
-   """
-   fname = fname.replace( ' ', '_' )
-   fname = fname.replace( '/', '_' )
-   fname = fname.replace( '\\', '_' )
-   fname = fname.replace( '!', '_' )
-   fname = fname.replace( '*', '_' )
-   fname = fname.replace( '`', '_' )
-   fname = fname.replace( "'", "_" )
-   fname = fname.replace( '"', "_" )
-   fname = fname.replace( '{', '(' )
-   fname = fname.replace( '}', ')' )
-   fname = fname.replace( '&', '_and_' )
+def cleanupFilename(fname):
+    """: Make the filename usable.
 
-   return fname
+    = INPUT VARIABLES
+    - fname   Given a filename, clean-it up to make sure we can use it with
+              the file system.
 
-#===========================================================================
-# For internal use only.
-def mergeDicts( d1, d2 ):
-   """: Recursively merge two dictionary data structures.
+    = RETURN VALUE
+    - Returns a cleaned up form of the input file name.
+    """
+    fname = fname.replace(' ', '_')
+    fname = fname.replace('/', '_')
+    fname = fname.replace('\\', '_')
+    fname = fname.replace('!', '_')
+    fname = fname.replace('*', '_')
+    fname = fname.replace('`', '_')
+    fname = fname.replace("'", "_")
+    fname = fname.replace('"', "_")
+    fname = fname.replace('{', '(')
+    fname = fname.replace('}', ')')
+    fname = fname.replace('&', '_and_')
 
-   This essentially performs a union of nested dictionary data
-   """
-   r = {}
-   r.update( d1 )
-
-   for key in d2:
-      value = d2[ key ]
-
-      if key in d1:
-         if isinstance( value, SubStyle ):
-            value = value.kwargs()
-
-         if isinstance( value, dict ) and ( key in d1 ):
-            other = d1[ key ]
-
-            if isinstance( other, SubStyle ):
-               other = other.kwargs()
-
-            value = mergeDicts( other, value )
-
-      r[ key ] = value
-
-   return r
+    return fname
 
 #===========================================================================
 # For internal use only.
-def resolveDefaults( defaults, subNames = [], **kwargs ):
-   """: Resolve a new set of defaults.
 
-   What this funtion will do is:
 
-      1) Make a duplicate of the default dictionary to be modified and
-         returned.
+def mergeDicts(d1, d2):
+    """: Recursively merge two dictionary data structures.
 
-      2) For each keyword-value parameter that is not set to None, that value
-         will be set in the dictionary to be returned.  If the value is itself
-         a dictionary, then it will be "merged" into the return dictionary.
+    This essentially performs a union of nested dictionary data
+    """
+    r = {}
+    r.update(d1)
 
-      3) For each of the names specified by subNames that exists in the default
-         dictionary, its values will be set in the dictionary to be returned.
-         If the value is itself a dictionary, then it will be "merged" into the
-         return dictionary.  It is important to note that the order of the
-         names specified in 'subNames' is important as that is the order
-         in which they are resolved.
+    for key in d2:
+        value = d2[key]
 
-      4) Returns the return dictionary.
+        if key in d1:
+            if isinstance(value, SubStyle):
+                value = value.kwargs()
 
-   When a dictionary 'A' is "merged" into another dictionary 'B', this is much
-   like the built-in dictionary 'update' method ( 'B.update( A )' ).  The
-   difference is that any value in 'A' that is set to None is not 'updated'
-   in 'B' and for any values that are themselves dictionaries, then they will
-   be "merged".
+            if isinstance(value, dict) and (key in d1):
+                other = d1[key]
 
-   = INPUT VARIABLES
-   - defaults  The current set of default values to resolve with.
-   - subNames  A list of names of sub-properties to resolve (in the order
-               to resolve them in).
-   - kwargs    Optional keyword arguments to also resolve.
+                if isinstance(other, SubStyle):
+                    other = other.kwargs()
 
-   = RETURN VALUE
-   - Return a new dictionary of default values.
-   """
-   # First duplicate the given defaults
-   subDefaults = {}
-   subDefaults.update( defaults )
+                value = mergeDicts(other, value)
 
-   # Next add in any keyword arguments
-   for key in kwargs:
-      value = kwargs[ key ]
+        r[key] = value
 
-      # If the kw value is not set, then ignore
-      if value is None:
-         continue
+    return r
 
-      # We have a kw value and nothing has been set yet.
-      if isinstance( value, SubStyle ):
-         value = value.kwargs()
+#===========================================================================
+# For internal use only.
 
-      if isinstance( value, dict ) and ( key in subDefaults ):
-         other = subDefaults[ key ]
-         if isinstance( other, SubStyle ):
-            other = other.kwargs()
 
-         value = mergeDicts( other, value )
+def resolveDefaults(defaults, subNames=[], **kwargs):
+    """: Resolve a new set of defaults.
 
-      # Store the value
-      subDefaults[ key ] = value
+    What this funtion will do is:
 
-   for name in subNames:
-      if name in defaults:
-         tmp = defaults[ name ]
+       1) Make a duplicate of the default dictionary to be modified and
+          returned.
 
-         if tmp is None:
+       2) For each keyword-value parameter that is not set to None, that value
+          will be set in the dictionary to be returned.  If the value is itself
+          a dictionary, then it will be "merged" into the return dictionary.
+
+       3) For each of the names specified by subNames that exists in the default
+          dictionary, its values will be set in the dictionary to be returned.
+          If the value is itself a dictionary, then it will be "merged" into the
+          return dictionary.  It is important to note that the order of the
+          names specified in 'subNames' is important as that is the order
+          in which they are resolved.
+
+       4) Returns the return dictionary.
+
+    When a dictionary 'A' is "merged" into another dictionary 'B', this is much
+    like the built-in dictionary 'update' method ( 'B.update( A )' ).  The
+    difference is that any value in 'A' that is set to None is not 'updated'
+    in 'B' and for any values that are themselves dictionaries, then they will
+    be "merged".
+
+    = INPUT VARIABLES
+    - defaults  The current set of default values to resolve with.
+    - subNames  A list of names of sub-properties to resolve (in the order
+                to resolve them in).
+    - kwargs    Optional keyword arguments to also resolve.
+
+    = RETURN VALUE
+    - Return a new dictionary of default values.
+    """
+    # First duplicate the given defaults
+    subDefaults = {}
+    subDefaults.update(defaults)
+
+    # Next add in any keyword arguments
+    for key in kwargs:
+        value = kwargs[key]
+
+        # If the kw value is not set, then ignore
+        if value is None:
             continue
 
-         if isinstance( tmp, SubStyle ):
-            tmp = tmp.kwargs()
+        # We have a kw value and nothing has been set yet.
+        if isinstance(value, SubStyle):
+            value = value.kwargs()
 
-         if isinstance( tmp, dict ):
-            subDefaults = mergeDicts( subDefaults, tmp )
-         else:
-            subDefaults[ name ] = tmp
+        if isinstance(value, dict) and (key in subDefaults):
+            other = subDefaults[key]
+            if isinstance(other, SubStyle):
+                other = other.kwargs()
 
-   return subDefaults
+            value = mergeDicts(other, value)
 
-#===========================================================================
-def stylePath( envvar = 'STYLEPATH' ):
-   """: Get the value of the STYLEPATH environment variable
+        # Store the value
+        subDefaults[key] = value
 
-   = INPUT VARIABLE
-   - envvar    The name of the environment variable to use for the style path.
+    for name in subNames:
+        if name in defaults:
+            tmp = defaults[name]
 
-   = RETURN VALUE
-   - Return a list of paths as defined by the STYLEPATH environment variable.
-   """
-   result = []
+            if tmp is None:
+                continue
 
-   if envvar.startswith( '$' ):
-      envvar = envvar[ 1: ]
+            if isinstance(tmp, SubStyle):
+                tmp = tmp.kwargs()
 
-   stylepath = os.getenv( envvar, "" )
-   stylepath = stylepath.split( ':' )
+            if isinstance(tmp, dict):
+                subDefaults = mergeDicts(subDefaults, tmp)
+            else:
+                subDefaults[name] = tmp
 
-   for directory in stylepath:
-      if len( directory.strip() ) == 0:
-         continue
-      p = path.normpath( path.expanduser( path.expandvars( directory ) ) )
-      result.append( p )
-
-   return result
+    return subDefaults
 
 #===========================================================================
 
+
+def stylePath(envvar='STYLEPATH'):
+    """: Get the value of the STYLEPATH environment variable
+
+    = INPUT VARIABLE
+    - envvar    The name of the environment variable to use for the style path.
+
+    = RETURN VALUE
+    - Return a list of paths as defined by the STYLEPATH environment variable.
+    """
+    result = []
+
+    if envvar.startswith('$'):
+        envvar = envvar[1:]
+
+    stylepath = os.getenv(envvar, "")
+    stylepath = stylepath.split(':')
+
+    for directory in stylepath:
+        if len(directory.strip()) == 0:
+            continue
+        p = path.normpath(path.expanduser(path.expandvars(directory)))
+        result.append(p)
+
+    return result
+
+#===========================================================================

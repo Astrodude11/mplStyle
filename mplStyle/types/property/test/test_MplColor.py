@@ -3,22 +3,22 @@
 # Copyright (c) 2014, California Institute of Technology.
 # U.S. Government Sponsorship under NASA Contract NAS7-03001 is
 # acknowledged.  All rights reserved.
-# 
+#
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
 # met:
-# 
+#
 # 1. Redistributions of source code must retain the above copyright
 # notice, this list of conditions and the following disclaimer.
-# 
+#
 # 2. Redistributions in binary form must reproduce the above copyright
 # notice, this list of conditions and the following disclaimer in the
 # documentation and/or other materials provided with the distribution.
-# 
+#
 # 3. Neither the name of the copyright holder nor the names of its
 # contributors may be used to endorse or promote products derived from
 # this software without specific prior written permission.
-# 
+#
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 # LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -53,63 +53,66 @@ from PyQt4 import QtGui
 #===========================================================================
 
 #===========================================================================
-class MySubStyle( S.SubStyle ):
-   """A Sub-Classed Style."""
 
-   prop = S.property.MplColor( default = None )
 
-   #-----------------------------------------------------------------------
+class MySubStyle(S.SubStyle):
+    """A Sub-Classed Style."""
+
+    prop = S.property.MplColor(default=None)
+
+    #-----------------------------------------------------------------------
 
 #===========================================================================
-class TestMplColor( unittest.TestCase ):
-   """MplColor module."""
 
-   #-----------------------------------------------------------------------
-   def setUp( self ):
-      """This method is called before any tests are run."""
-      pass
 
-   #-----------------------------------------------------------------------
-   def tearDown( self ):
-      """This method is called after all tests are run."""
-      pass
+class TestMplColor(unittest.TestCase):
+    """MplColor module."""
 
-   #=======================================================================
-   # Add tests methods below.
-   # Any method whose name begins with 'test' will be run by the framework.
-   #=======================================================================
-   def testMplColor( self ):
-      """Test MplColor style property."""
-      # Default initialize
-      style = MySubStyle()
-      self.assertEqual( None, MySubStyle.prop.default,
-               msg = "Class default value for 'prop' wrong" )
-      self.assertEqual( None, style.prop,
-               msg = "Instance default value for 'style.prop' wrong" )
+    #-----------------------------------------------------------------------
+    def setUp(self):
+        """This method is called before any tests are run."""
+        pass
 
-      # Change the local copy
-      style.prop = "red"
-      self.assertEqual( None, MySubStyle.prop.default,
-               msg = "1) Class default value for 'prop' changed" )
-      self.assertEqual( "#FF0000", style.prop,
-               msg = "1) Instance value for 'style.prop' wrong" )
+    #-----------------------------------------------------------------------
+    def tearDown(self):
+        """This method is called after all tests are run."""
+        pass
 
-      # Make a new instance
-      newStyle = MySubStyle( prop = QtGui.QColor( 0, 255, 0 ) )
-      self.assertEqual( None, MySubStyle.prop.default,
-               msg = "2) Class default value for 'prop' changed" )
-      self.assertEqual( "#FF0000", style.prop,
-               msg = "2) Instance value for 'style.prop' wrong" )
-      self.assertEqual( "#00FF00", newStyle.prop,
-               msg = "2) Instance value for 'newStyle.prop' wrong" )
+    #=======================================================================
+    # Add tests methods below.
+    # Any method whose name begins with 'test' will be run by the framework.
+    #=======================================================================
+    def testMplColor(self):
+        """Test MplColor style property."""
+        # Default initialize
+        style = MySubStyle()
+        self.assertEqual(None, MySubStyle.prop.default,
+                         msg="Class default value for 'prop' wrong")
+        self.assertEqual(None, style.prop,
+                         msg="Instance default value for 'style.prop' wrong")
 
-      # Error condition
-      msg = "Failed to raise on invalid value."
-      self.assertRaises( Exception, MySubStyle, prop='bad', msg = msg )
+        # Change the local copy
+        style.prop = "red"
+        self.assertEqual(None, MySubStyle.prop.default,
+                         msg="1) Class default value for 'prop' changed")
+        self.assertEqual("#FF0000", style.prop,
+                         msg="1) Instance value for 'style.prop' wrong")
 
-      # String check
-      s = "MplColor: MySubStyle.prop"
-      self.assertEqual( s, str(MySubStyle.prop), msg = "Incorrect string value" )
+        # Make a new instance
+        newStyle = MySubStyle(prop=QtGui.QColor(0, 255, 0))
+        self.assertEqual(None, MySubStyle.prop.default,
+                         msg="2) Class default value for 'prop' changed")
+        self.assertEqual("#FF0000", style.prop,
+                         msg="2) Instance value for 'style.prop' wrong")
+        self.assertEqual("#00FF00", newStyle.prop,
+                         msg="2) Instance value for 'newStyle.prop' wrong")
+
+        # Error condition
+        msg = "Failed to raise on invalid value."
+        self.assertRaises(Exception, MySubStyle, prop='bad', msg=msg)
+
+        # String check
+        s = "MplColor: MySubStyle.prop"
+        self.assertEqual(s, str(MySubStyle.prop), msg="Incorrect string value")
 
 #=======================================================================
-
